@@ -5,8 +5,9 @@ function buildMetadata(sample) {
        Use d3 to select the panel with id of `#sample-metadata`
        @app.route("/metadata/<sample>") Line 52
     */ 
-      var sampleJson =d3.json(`/metadata/${sample}`).then((data) => {
-
+   var sampleJson
+      d3.json(`/metadata/${sample}`).then((data) => {
+        sampleJson = data;
         var sampleMetadata= d3.select ("#sample-metadata");   // HTML -div id="sample-metadata" Line 31
         console.log(sampleJson);  
       
@@ -20,6 +21,7 @@ function buildMetadata(sample) {
        });
 
       });
+}
   
       // Hint: Inside the loop, you will need to use d3 to append new
       // tags for each key-value in the metadata.
@@ -32,25 +34,21 @@ function buildMetadata(sample) {
         /* @TODO: Use `d3.json` to fetch the sample data for the plots
         """Return `otu_ids`, `otu_labels`,and `sample_values`."""
         */
-      d3.json(`/samples/${sample}`).then((sampleData) => {
+      d3.json("/samples/${sample}").then((sampleData) => {
+        console.log(sampleData)
 
         //another option: Global variables: 
-        // var xAxis = data.otu_ids;
-        // var yAxis = data.sample_values;
-        // var labels = data.otu_labels;
+        var xAxis = data.otu_ids;
+        var yAxis = data.sample_values;
+        var labels = data.otu_labels;
 
-       
-        var trace1 =[{
-            x: sampleData.otu_ids,
-            y: sampleData_values,
-            labels: sampleData.out_labels,
-            mode: "markers",
-            marker: {
-                size: sampleData_values,
-                color: sampleData.otu_ids,
-                colorscale: "Viridis",}
-        }]
-  });
+        var trace1 ={
+            x: xAxis,
+            y: yAxis,
+            text: labels 
+        };
+
+        var data = [trace1];
 
 
 
@@ -58,7 +56,14 @@ function buildMetadata(sample) {
       var layoutBubble ={
         title: "Belly Button Bacteria",
         height: 600, 
-        width:1400,};
+        width:1400,
+        mode: "markers",
+        marker: {
+            size: sampleData_values,
+            color: sampleData.otu_ids,
+            colorscale: "Viridis"
+          }
+        };
 
       // @TODO: Build a Bubble Chart using the sample data
       Plotly.newPlot("bubble", trace1, layoutBubble);
@@ -88,7 +93,8 @@ function buildMetadata(sample) {
   
       // HINT: You will need to use slice() to grab the top 10 sample_values,
       // otu_ids, and labels (10 each).
-  }
+  });
+}
   
   function init() {
     // Grab a reference to the dropdown select element
@@ -115,6 +121,7 @@ function buildMetadata(sample) {
     buildCharts(newSample);
     buildMetadata(newSample);
   }
-  
+
   // Initialize the dashboard
   init();
+
