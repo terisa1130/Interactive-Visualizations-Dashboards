@@ -7,9 +7,10 @@ function buildMetadata(sample) {
     */ 
    var sampleJson
       d3.json(`/metadata/${sample}`).then((data) => {
+        // console.log(data)
         sampleJson = data;
-        var sampleMetadata= d3.select ("#sample-metadata");   // HTML -div id="sample-metadata" Line 31
-        console.log(sampleJson);  
+        var sampleMetadata = d3.select("#sample-metadata"); 
+        // console.log("TEST",sampleJson);  
       
       // Use `.html("") to clear any existing metadata
         sampleMetadata.html("");
@@ -17,7 +18,7 @@ function buildMetadata(sample) {
       // Use `Object.entries` to add each key and value pair to the panel
       //NOTE: iterating through an Object then append output as paragraphs 
         Object.entries(sample).forEach(([key,value]) => {
-            sampleMetadata.append("h3").text(`${key}:${value}`) // HTML -div id="sample-metadata" Line 29
+            sampleMetadata.append("h5").text(`${key}:${value}`) // HTML -div id="sample-metadata" Line 29
        });
 
       });
@@ -28,64 +29,76 @@ function buildMetadata(sample) {
   
       // BONUS: Build the Gauge Chart
       // buildGauge(data.WFREQ);
-  
-  
   function buildCharts(sample) {
         /* @TODO: Use `d3.json` to fetch the sample data for the plots
         """Return `otu_ids`, `otu_labels`,and `sample_values`."""
-        */
-      d3.json("/samples/${sample}").then((sampleData) => {
-        console.log(sampleData)
+        */   
+      d3.json(`/samples/${sample}`).then((sampleData) => {
+        console.log(sampleData);
+        console.log("TEST2", sampleData);
 
-        //another option: Global variables: 
-        var xAxis = data.otu_ids;
-        var yAxis = data.sample_values;
-        var labels = data.otu_labels;
+
+        //Declare Global variables: 
+        var xAxis = sampleData.otu_ids;
+        var yAxis = sampleData.sample_values;
+        var labels = sampleData.otu_labels;
 
         var trace1 ={
-            x: xAxis,
-            y: yAxis,
-            text: labels 
+            "x": xAxis,
+            "y": yAxis,
+            "text": labels,
+            mode: "markers",
+            marker: {
+                size: sampleData.sample_values,
+                color: sampleData.otu_ids,
+                colorscale: "Viridis"
+              }
         };
-
         var data = [trace1];
-
-
 
       //apply the group bubble mode to the layout
       var layoutBubble ={
         title: "Belly Button Bacteria",
         height: 600, 
-        width:1400,
-        mode: "markers",
-        marker: {
-            size: sampleData_values,
-            color: sampleData.otu_ids,
-            colorscale: "Viridis"
-          }
+        width:1400
         };
-
       // @TODO: Build a Bubble Chart using the sample data
-      Plotly.newPlot("bubble", trace1, layoutBubble);
+      Plotly.newPlot("bubble", data, layoutBubble);
 
 
-  
-  
+
+
       // @TODO: Build a Pie Chart
-      var topTen =sampleData.sample_values.slice(0,10);
-      var tenLabes =sampleData.otu_ids.slice(0,10);
-      var tenText =sampleData.out_labels.slice(0,10);
+      console.log("TEST DATA", sampleData);
+      console.log("TEST DATA1", sampleData.sample_values.slice(0,10));
+      console.log("TEST DATA2", sampleData.otu_ids.slice(0,10));
+      console.log("TEST DATA3", sampleData.otu_labels.slice(0,10));
+  
+      var topTen = sampleData.sample_values.slice(0,10);
+      console.log("Test top 10", topTen);
+      var tenLabels = sampleData.otu_ids.slice(0,10);
+      console.log("Test top 10 labels", tenLabels);
+      var tenText = sampleData.otu_labels.slice(0,10);
+      console.log("Test top 10 text", tenText);
+
       var trace2 =[{
-          values: topTen, 
-          lables: tenLabels,
-          hovertext: tenText,
-          hole: .4,
-          type: 'pie'
-      }]
+          "values": topTen, 
+          "labels": tenLabels,
+          "text": tenText,
+          "hole": .4,
+          "type": 'pie',
+          "textfont":{"color":"rgb(255, 255, 255)"},
+          "textinfo":"label"
+
+      }];
+      console.log ("TEST Trace2",trace2);
+
+      var dataPie = [trace2];  //try 
+      console.log("dataPie", dataPie);
 
       var layoutPie ={
-          height:400,
-          width:500
+          height: 400,
+          width: 500
       }
 
       Plotly.newPlot("pie", trace2, layoutPie);
