@@ -97,8 +97,8 @@ function buildMetadata(sample) {
       console.log("dataPie", dataPie);
 
       var layoutPie ={
-          height: 400,
-          width: 500
+          height: 550,
+          width: 650
       }
 
       Plotly.newPlot("pie", trace2, layoutPie);
