@@ -17,8 +17,8 @@ function buildMetadata(sample) {
   
       // Use `Object.entries` to add each key and value pair to the panel
       //NOTE: iterating through an Object then append output as paragraphs 
-        Object.entries(sample).forEach(([key,value]) => {
-            sampleMetadata.append("h5").text(`${key}:${value}`) // HTML -div id="sample-metadata" Line 29
+        Object.entries(data).forEach(([key,value]) => {
+            sampleMetadata.append("h6").text(`${key}:${value}`) // HTML -div id="sample-metadata" Line 29
        });
 
       });
@@ -58,9 +58,10 @@ function buildMetadata(sample) {
 
       //apply the group bubble mode to the layout
       var layoutBubble ={
-        title: "Belly Button Bacteria",
+        title: "Bubble Chart: Belly Button Bacteria",
+        xAxis: {title: "OTU ID"},
         height: 600, 
-        width:1400
+        width: 1200
         };
       // @TODO: Build a Bubble Chart using the sample data
       Plotly.newPlot("bubble", data, layoutBubble);
@@ -69,36 +70,34 @@ function buildMetadata(sample) {
 
 
       // @TODO: Build a Pie Chart
-      console.log("TEST DATA", sampleData);
-      console.log("TEST DATA1", sampleData.sample_values.slice(0,10));
-      console.log("TEST DATA2", sampleData.otu_ids.slice(0,10));
-      console.log("TEST DATA3", sampleData.otu_labels.slice(0,10));
+      console.log("TEST sampleData", sampleData);
+      console.log("TEST sampleValue", sampleData.sample_values.slice(0,10));
+      console.log("TEST otuIDS", sampleData.otu_ids.slice(0,10));
+      console.log("TEST otuLabels", sampleData.otu_labels.slice(0,10));
   
       var topTen = sampleData.sample_values.slice(0,10);
-      console.log("Test top 10", topTen);
       var tenLabels = sampleData.otu_ids.slice(0,10);
-      console.log("Test top 10 labels", tenLabels);
       var tenText = sampleData.otu_labels.slice(0,10);
-      console.log("Test top 10 text", tenText);
 
       var trace2 =[{
           "values": topTen, 
           "labels": tenLabels,
-          "text": tenText,
+          "hovertext": tenText,
           "hole": .4,
           "type": 'pie',
           "textfont":{"color":"rgb(255, 255, 255)"},
-          "textinfo":"label"
+          "textinfo":"labels"
 
       }];
       console.log ("TEST Trace2",trace2);
 
       var dataPie = [trace2];  //try 
-      console.log("dataPie", dataPie);
+      console.log("dataPie", trace2);
 
       var layoutPie ={
-          height: 550,
-          width: 650
+        title: "Pie Chart: Top 10 Belly Button Bacteria",
+        height: 630,
+        width: 750
       }
 
       Plotly.newPlot("pie", trace2, layoutPie);
