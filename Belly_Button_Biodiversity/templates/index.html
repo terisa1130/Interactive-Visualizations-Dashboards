@@ -7,6 +7,13 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Flask Plotlyjs Example</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <style>
+    #sample-metadata h6 {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  </style>
 </head>
 
 <body>
@@ -35,12 +42,13 @@
         <div id="pie"></div>
       </div>
       <div class="col-md-5">
+        <!-- <h4 class ="intro">"Belly Button Washing Frequency \n Scrubs per Week"</h4> -->
         <div id="gauge"></div>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12", style="text-align:center">
       <div id="bubble"></div>
     </div>
   </div>
