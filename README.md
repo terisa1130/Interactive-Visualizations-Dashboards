@@ -8,7 +8,7 @@ Back End: Flask Web Framework
 
 Front End: HTML, CSS, JavaScript 
 
-Deployment: Heroku
+Deployment Tool: Heroku
 
 
 Web Application:
